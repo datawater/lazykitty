@@ -22,6 +22,12 @@ board_t new_board() {
     return board;
 }
 
+board_t new_board_from_fen(char* fen) {
+    assert(fen != NULL);
+
+    lazykitty_todo("Implement FEN parsing to board_t");
+}
+
 char* board_to_string(board_t* board) {
     assert(board != NULL);
 
