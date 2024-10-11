@@ -1,4 +1,5 @@
-CFLAGS = -Wall -Wextra -Werror -std=c11
+CFLAGS_WARNINGS = -Wall -Wextra -Werror -pedantic -Wstrict-aliasing -Wno-pointer-arith -Wno-variadic-macros
+CFLAGS = $(CFLAGS_WARNINGS) -std=c11
 PROFILE_DEBUG_CFLAGS := -ggdb -O0
 PROFILE_RELEASE_CFLAGS := -O3 -s -flto -mtune=native -march=native -fgraphite-identity
 PROFILE_SIZE_CFLAGS := -Oz -s

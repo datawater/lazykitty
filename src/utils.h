@@ -23,12 +23,12 @@ void format_current_time(char* output);
 #define lazykitty_warn(args...) __lazykitty_log_skeleton("[WARN]", args)
 
 #define lazykitty_debug(args...) do {\
-    printf("%s %s:%d [DEBUG] ", __FUNCTION__, __FILE__, __LINE__);\
+    printf("%s %s:%d [DEBUG] ", __func__, __FILE__, __LINE__);\
     printf(args); \
 } while(0)
 
 #define lazykitty_todo(args...) do {\
-    printf("%s %s:%d [DEBUG] ", __FUNCTION__, __FILE__, __LINE__);\
+    printf("%s %s:%d [DEBUG] ", __func__, __FILE__, __LINE__);\
     printf(args);\
     abort();\
 } while(0)
