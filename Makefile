@@ -1,38 +1,19 @@
-CFLAGS_WARNINGS = -Wall -Wextra -Werror -pedantic -Wstrict-aliasing -Wno-pointer-arith -Wno-variadic-macros
-CFLAGS = $(CFLAGS_WARNINGS) -std=c11
-PROFILE_DEBUG_CFLAGS := -ggdb -O0
-PROFILE_RELEASE_CFLAGS := -O3 -s -flto -mtune=native -march=native -fgraphite-identity
-PROFILE_SIZE_CFLAGS := -Oz -s
-PROFILE ?=debug
+include config.mk
 
-IS_ERROR = 0
-ERROR_TEXT = ok
-
-SOURCE_FILES = $(wildcard src/*.c)
-OBJECT_FILES = $(patsubst %.c,%.o,$(SOURCE_FILES))
-
-ifeq ($(PROFILE),debug)
-	CFLAGS += $(PROFILE_DEBUG_CFLAGS)
-else
-	ifeq ($(PROFILE),release)
-		CFLAGS += $(PROFILE_RELEASE_CFLAGS)
-	else
-		ifeq ($(PROFILE),size)
-			CFLAGS += $(PROFILE_SIZE_CFLAGS)
-		else
-			IS_ERROR =1
-			ERROR_TEXT = [ERROR] Unknown profile "$(PROFILE)".
-		endif
-	endif
-endif
+LAZYKITTY_SOURCE_FILES = $(wildcard src/*.c)
+LAZYKITTY_OBJECT_FILES = $(patsubst %.c,%.o,$(LAZYKITTY_SOURCE_FILES))
 
 main: check_error lazykitty
+test: workshy
+	make -C ./src/tests
 
-lazykitty: $(OBJECT_FILES)
+lazykitty: $(LAZYKITTY_OBJECT_FILES)
 	$(CC) $(CFLAGS) $^ -o $@
 
-build/%.o: src/%.c
-	@-mkdir -p build
+workshy:
+	make -C ./src/workshy
+
+src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 check_error:
@@ -44,3 +25,6 @@ endif
 clean:
 	-find . -type f -name "*.o" -delete
 	-rm lazykitty
+
+	-make -C ./src/workshy clean
+	-make -C ./src/tests clean
