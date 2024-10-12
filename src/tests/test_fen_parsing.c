@@ -4,5 +4,5 @@
 result_e test_fen_parsing() {
     printf("Impelement testing for fen parsing\n");
 
-    return ok;
+    return fail;
 }

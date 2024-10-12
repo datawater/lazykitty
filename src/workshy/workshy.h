@@ -15,7 +15,7 @@ typedef enum {
 typedef result_e(*workshy_test_function_ptr)(void);
 
 static workshy_test_function_ptr __workshy_tests_list[WORKSHY_MAX_AMOUNT_OF_TESTS];
-static atomic_int __workshy_tests_amount;
+static unsigned int __workshy_tests_amount;
 
 int __workshy_main(int argc, char** argv);
 
