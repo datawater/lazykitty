@@ -1,8 +1,5 @@
-#include <stdio.h>
 #include "tests.h"
 
-result_e test_fen_parsing() {
-    printf("Impelement testing for fen parsing\n");
-
-    return fail;
+result_t test_fen_parsing(void) {
+    return new_result_error("Not yet implemented");
 }

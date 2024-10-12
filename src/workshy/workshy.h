@@ -2,20 +2,27 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdatomic.h>
 
 typedef enum {
-    ok, fail
+    ok, fail, unknown
 } result_e;
 
-#ifndef WORKSHY_MAX_AMOUNT_OF_TESTS
-#define WORKSHY_MAX_AMOUNT_OF_TESTS 512
-#endif // WORKSHY_MAX_AMOUNT_OF_TESTS
+typedef struct {
+    result_e result;
+    char* error;
+} result_t;
 
-typedef result_e(*workshy_test_function_ptr)(void);
+#ifndef WORKSHY_DEFAULT_AMOUNT_OF_TESTS
+#define WORKSHY_DEFAULT_AMOUNT_OF_TESTS 128
+#endif // WORKSHY_DEFAULT_AMOUNT_OF_TESTS
 
-static workshy_test_function_ptr __workshy_tests_list[WORKSHY_MAX_AMOUNT_OF_TESTS];
-static unsigned int __workshy_tests_amount;
+#ifndef WORKSHY_DEFAULT_AMOUNT_OF_BENCHMARKS
+#define WORKSHY_DEFAULT_AMOUNT_OF_BENCHMARKS 128
+#endif // WORKSHY_DEFAULT_AMOUNT_OF_TESTS
+
+result_t new_result(void);
+result_t new_result_error(char* error);
+result_t new_result_ok(void);
 
 int __workshy_main(int argc, char** argv);
 
@@ -23,18 +30,33 @@ int __workshy_main(int argc, char** argv);
 #define CONCAT_2(x, y) CONCAT_1(x, y)
 #define CONCAT_3(x) CONCAT_2(x, __COUNTER__)
 
-void __workshy__register_test(result_e (*test_function)(void));
+void __workshy__register_test(result_t (*test_function)(void), char* function_name);
 
 #define WORKSHY_TEST(function_name) \
-    result_e function_name(void); \
+    result_t function_name(void); \
     static void function_name##__runtime_marker(void) __attribute__((constructor)); \
     static void function_name##__runtime_marker(void) { \
-        __workshy__register_test(function_name); \
+        __workshy__register_test(function_name, #function_name); \
     } \
-    result_e function_name(void)
+    result_t function_name(void)
 
-#define WORKSHY_MAIN_RUN_TESTS() \
+
+#define WORKSHY_BENCHMARK(function_name) \
+    result_t function_name(void); \
+    static void function_name##__runtime_marker(void) __attribute__((constructor)); \
+    static void function_name##__runtime_marker(void) { \
+        __workshy__register_benchmark(function_name, #function_name); \
+    } \
+    result_t function_name(void)
+
+#define WORKSHY_RUN() \
     int main(int argc, char** argv) { \
         return __workshy_main(argc, argv); \
     } \
 
+#define WORKSHY_BLACK_BOX(code_blox) \
+    do { \
+        asm volatile("" ::: "memory"); \
+        code_blox \
+        asm volatile("" ::: "memory"); \
+    } while(0)

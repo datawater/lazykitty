@@ -3,25 +3,35 @@ include ../../config.mk
 TEST_SOURCE_FILES = $(wildcard ./*.c)
 TEST_OBJECT_FILES = $(patsubst %.c,%.o,$(TEST_SOURCE_FILES))
 WORKSHY_PATH = ../workshy -Wno-unused-variable
-CFLAGS += -L$(WORKSHY_PATH) -L./
+CFLAGS += -L$(WORKSHY_PATH) -L./ -L../../
 
+.PHONY: main
 main: check_error run_tests
 
-run_tests: libtests.a
-	$(CC) $(CFLAGS) $^ -o $@ -lworkshy -ltests
+.PHONY: run_tests
+run_tests: liblazykitty.a compile_tests
+
+.PHONY: compile_tests
+compile_tests: libtests.a
+	$(CC) $(CFLAGS) $^ -o run_tests -lworkshy -ltests -llazykitty
 
 libtests.a: $(TEST_OBJECT_FILES)
 	ar -crs $@ $^
 
+liblazykitty.a:
+	make -C ../../ $@
+
 ./%.o: ./%.c
 	$(CC) $(CFLAGS) $< -o $@ -c -fPIC
 
+.PHONY: check_error
 check_error:
 ifeq ($(IS_ERROR),1)
 	$(info $(ERROR_TEXT))
 else
 endif
 
+.PHONY: clean
 clean:
 	-find . -type f -name "*.o" -delete
 	-rm *.out
