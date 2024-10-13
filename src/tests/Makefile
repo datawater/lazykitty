@@ -13,7 +13,7 @@ run_tests: liblazykitty.a compile_tests
 
 .PHONY: compile_tests
 compile_tests: libtests.a
-	$(CC) $(CFLAGS) $^ -o run_tests -lworkshy -ltests -llazykitty
+	$(CC) $(CFLAGS) $^ -o run_tests -lworkshy -ltests -llazykitty $(LIBS)
 
 libtests.a: $(TEST_OBJECT_FILES)
 	ar -crs $@ $^

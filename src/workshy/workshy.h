@@ -1,16 +1,8 @@
 #pragma once
 
+#include "register.h"
 #include <stdbool.h>
 #include <stddef.h>
-
-typedef enum {
-    ok, fail, unknown
-} result_e;
-
-typedef struct {
-    result_e result;
-    char* error;
-} result_t;
 
 #ifndef WORKSHY_DEFAULT_AMOUNT_OF_TESTS
 #define WORKSHY_DEFAULT_AMOUNT_OF_TESTS 128
@@ -19,6 +11,8 @@ typedef struct {
 #ifndef WORKSHY_DEFAULT_AMOUNT_OF_BENCHMARKS
 #define WORKSHY_DEFAULT_AMOUNT_OF_BENCHMARKS 128
 #endif // WORKSHY_DEFAULT_AMOUNT_OF_TESTS
+
+static int __workshy_benchmark_samples_amount = 100;
 
 result_t new_result(void);
 result_t new_result_error(char* error);
@@ -31,6 +25,7 @@ int __workshy_main(int argc, char** argv);
 #define CONCAT_3(x) CONCAT_2(x, __COUNTER__)
 
 void __workshy__register_test(result_t (*test_function)(void), char* function_name);
+void __workshy__register_benchmark(void (*test_function)(void), char* function_name);
 
 #define WORKSHY_TEST(function_name) \
     result_t function_name(void); \
@@ -40,14 +35,13 @@ void __workshy__register_test(result_t (*test_function)(void), char* function_na
     } \
     result_t function_name(void)
 
-
 #define WORKSHY_BENCHMARK(function_name) \
-    result_t function_name(void); \
+    void function_name(void); \
     static void function_name##__runtime_marker(void) __attribute__((constructor)); \
     static void function_name##__runtime_marker(void) { \
         __workshy__register_benchmark(function_name, #function_name); \
     } \
-    result_t function_name(void)
+    void function_name(void) 
 
 #define WORKSHY_RUN() \
     int main(int argc, char** argv) { \
@@ -56,7 +50,7 @@ void __workshy__register_test(result_t (*test_function)(void), char* function_na
 
 #define WORKSHY_BLACK_BOX(code_blox) \
     do { \
-        asm volatile("" ::: "memory"); \
+        __asm__ volatile("" ::: "memory"); \
         code_blox \
-        asm volatile("" ::: "memory"); \
+        __asm__ volatile("" ::: "memory"); \
     } while(0)

@@ -11,7 +11,7 @@ test: workshy
 	make -C ./src/tests
 
 lazykitty: $(LAZYKITTY_OBJECT_FILES)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 liblazykitty.a: $(LAZYKITTY_OBJECT_FILES)
 	ar -crs $@ $^
