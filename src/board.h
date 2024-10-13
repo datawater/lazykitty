@@ -17,7 +17,8 @@ typedef struct board {
     i8 en_passant_square;
 } board_t;
 
-board_t new_board();
+board_t new_board(void);
+board_t new_board_from_fen(char* fen);
 char* board_to_string(board_t* board);
 char* board_to_debug_string(board_t* board);
 char* bitboard_to_string(bitboard_t bitboard);

@@ -13,13 +13,21 @@ bitboard_t mirror_bitboard_horizontally(bitboard_t x) {
     return x;
 }
 
-board_t new_board() {
+board_t new_board(void) {
     board_t board;
     memset(&board, 0, sizeof(board));
 
     board.en_passant_square = -1;
 
     return board;
+}
+
+board_t new_board_from_fen(char* fen) {
+    assert(fen != NULL);
+
+    lazykitty_todo("Implement FEN parsing to board_t");
+
+    return (board_t) {0};
 }
 
 char* board_to_string(board_t* board) {
@@ -35,6 +43,8 @@ char* board_to_debug_string(board_t* board) {
     UNUSED(board);
 
     lazykitty_todo("TODO: Implement board to char piece string");
+
+    return NULL;
 }
 
 char* bitboard_to_debug_string(bitboard_t bitboard) {

@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 #include "types.h"
 
 void format_current_time(char* output);
@@ -30,7 +32,8 @@ void format_current_time(char* output);
 #define lazykitty_todo(args...) do {\
     printf("%s %s:%d [DEBUG] ", __func__, __FILE__, __LINE__);\
     printf(args);\
-    abort();\
+    fflush(stdout); \
+    abort(); \
 } while(0)
 
 // https://stackoverflow.com/a/25108449
