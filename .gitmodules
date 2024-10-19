@@ -1,3 +1,6 @@
 [submodule "workshy"]
 	path = src/workshy
 	url = https://github.com/datawater/workshy
+[submodule "src/workshy"]
+	path = src/workshy
+	url = https://github.com/datawater/workshy
