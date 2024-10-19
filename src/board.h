@@ -13,8 +13,8 @@
 
 #define LK_STRING_SQUARE_TO_N(x)    ((x)[0] - 'a' + (7 - (x)[1] + '1') * 8)
 #define LK_STRING_SQUARE_TO_BB(x)   (UINT64_C(1) << LK_STRING_SQUARE_TO_N((x)))
-#define LK_POPCNT_N_TO_SQUARE_N(x)  ((x % 8) + ((7 - ((x) / 8)) * 8))
-#define LK_POPCNT_N_TO_SQUARE_BB(x) (UINT64_C(1) << LK_POPCNT_N_TO_SQUARE_N((x)))
+#define LK_POPCNT_N_TO_NATIVE_N(x)  ((x % 8) + ((7 - ((x) / 8)) * 8))
+#define LK_POPCNT_N_TO_SQUARE_BB(x) (UINT64_C(1) << LK_POPCNT_N_TO_NATIVE_N((x)))
 
 #define EMPTY_BB UINT64_C(0)
 #define BB(x) (UINT64_C(x))
