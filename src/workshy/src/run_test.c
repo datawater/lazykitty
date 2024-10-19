@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-#include "workshy.h"
 #include "register.h"
 #include "console.h"
 #include "run_utils.h"
@@ -21,7 +21,9 @@ bool __workshy_run_test(__workshy_test_function_ptr function, char* function_nam
 
     if (result.result == fail) {
         printf(ANSI_COLOR_RED"failed\n"ANSI_COLOR_RESET);
-        printf("Fail error string: %s\n\n", result.error);
+
+        if (result.error != NULL)
+            printf("Fail error string: %s\n\n", result.error);
     } else {
         printf(ANSI_COLOR_GREEN"passed\n"ANSI_COLOR_RESET);
         return true;

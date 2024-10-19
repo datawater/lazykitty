@@ -1,6 +1,6 @@
-include ../../config.mk
+include config.mk
 
-WORKSHY_SOURCE_FILES = $(wildcard ./*.c)
+WORKSHY_SOURCE_FILES = $(wildcard ./src/*.c)
 WORKSHY_OBJECT_FILES = $(patsubst %.c,%.o,$(WORKSHY_SOURCE_FILES))
 
 CFLAGS += -Wno-unused-variable -Wno-pedantic
@@ -11,8 +11,12 @@ main: check_error libworkshy.a
 libworkshy.a: $(WORKSHY_OBJECT_FILES)
 	ar -crs $@ $^
 
-./%.o: ./%.c
+src/%.o: src/%.c
 	$(CC) $(CFLAGS) -fPIE -c $< -o $@
+
+.PHONY: test
+test:
+	make -C ./examples
 
 .PHONY: check_error
 check_error:
@@ -25,3 +29,5 @@ endif
 clean:
 	-find . -type f -name "*.o" -delete
 	-rm libworkshy.a
+
+	make -C ./examples clean

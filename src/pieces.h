@@ -19,6 +19,8 @@ typedef enum piece {
     black_rook,
     black_queen,
     black_king,
+    
+    none_piece,
 } piece_e;
 
 typedef enum castle_type {
@@ -28,5 +30,3 @@ typedef enum castle_type {
     black_kingside,
     black_queenside
 } castle_type_e;
-
-#define piece_to_inde

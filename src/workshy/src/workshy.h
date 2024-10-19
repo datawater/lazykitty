@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #include "register.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -54,3 +58,7 @@ void __workshy__register_benchmark(void (*test_function)(void), char* function_n
         code_blox \
         __asm__ volatile("" ::: "memory"); \
     } while(0)
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus

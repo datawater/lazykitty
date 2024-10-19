@@ -1,0 +1,3 @@
+[submodule "workshy"]
+	path = src/workshy
+	url = https://github.com/datawater/workshy
